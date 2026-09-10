@@ -72,11 +72,29 @@
   window.EJS_gameUrl = juego.rom;
   window.EJS_core = juego.core; // 'gambatte' = Game Boy Color
   window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
-  window.EJS_startOnLoaded = true;
   window.EJS_backgroundColor = '#000000';
+  window.EJS_startButtonName = 'Toca para jugar';
 
-  // Guardar progreso automáticamente en el navegador del celular
-  window.EJS_DEBUG_XX = false;
+  // IMPORTANTE: no forzamos autoarranque (EJS_startOnLoaded).
+  // El navegador bloquea el audio hasta que hay un toque real del usuario,
+  // así que dejamos que EmulatorJS muestre su botón de inicio propio.
+  // Eso evita la pantalla en blanco/aleatoria de antes.
+
+  // Layout de botones táctiles: dpad + A/B + Start/Select bien separados.
+  // input_value según el estándar de EmulatorJS:
+  // 0=A, 1=B(inferior), 2=Select, 3=Start, 4-7=dpad, 8=B, 9=Y
+  window.EJS_VirtualGamepadSettings = [
+    // D-pad a la izquierda
+    { type: "dpad", location: "left", left: "20%", top: "60%", joystickInput: false, inputValues: [4, 5, 6, 7] },
+
+    // Botones A/B a la derecha, estilo GBC (A arriba-derecha, B abajo-izquierda del grupo)
+    { type: "button", text: "A", id: "a", location: "right", left: 75, top: 15, bold: true, input_value: 0 },
+    { type: "button", text: "B", id: "b", location: "right", left: 30, top: 55, bold: true, input_value: 8 },
+
+    // Start y Select centrados abajo, separados y con texto legible
+    { type: "button", text: "Select", id: "select", location: "center", left: -18, top: 85, fontSize: 13, input_value: 2 },
+    { type: "button", text: "Start", id: "start", location: "center", left: 18, top: 85, fontSize: 13, input_value: 3 }
+  ];
 
   document.getElementById('cargando').remove();
 </script>
