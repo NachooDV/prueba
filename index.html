@@ -301,11 +301,13 @@
 <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
 
 <script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js').catch(function (err) {
-      console.log('Service worker no registrado:', err);
-    });
-  }
+  // Service worker DESACTIVADO temporalmente: sospechamos que estaba
+  // interceptando las descargas grandes del core/ROM y trabándolas.
+  // if ('serviceWorker' in navigator) {
+  //   navigator.serviceWorker.register('sw.js').catch(function (err) {
+  //     console.log('Service worker no registrado:', err);
+  //   });
+  // }
 </script>
 
 </body>
