@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Jugar</title>
+
+<!-- PWA: manifest -->
+<link rel="manifest" href="manifest.json">
+
+<!-- PWA: iOS (Safari no lee bien manifest.json, necesita estas tags aparte) -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Jugar">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+
+<!-- PWA: Android/Chrome -->
+<meta name="theme-color" content="#000000">
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #000;
+    height: 100%;
+    overflow: hidden;
+  }
+  #game {
+    width: 100vw;
+    height: 100vh;
+  }
+  #cargando {
+    color: #fff;
+    font-family: sans-serif;
+    text-align: center;
+    padding-top: 40vh;
+  }
+</style>
+</head>
+<body>
+
+<div id="cargando">Cargando emulador...</div>
+<div id="game"></div>
+
+<script>
+  // ---------------------------------------------------------
+  // CONFIGURACIÓN QUE DEBES AJUSTAR TÚ:
+  // ---------------------------------------------------------
+
+  // 1) Selección de juego según parámetro en la URL
+  //    Ej: tusitio.com/jugar.html?id=pokemon
+  const params = new URLSearchParams(window.location.search);
+  const juegoId = params.get('id') || 'demo';
+
+  // 2) Mapa de juegos: id -> ruta de la ROM
+  //    Sube tus ROMs a tu propio hosting (mismo servidor, carpeta /roms/)
+  const juegos = {
+    demo:    { rom: 'roms/demo.gbc',    core: 'gambatte', nombre: 'Juego Demo' },
+    // pokemon: { rom: 'roms/pokemon.gbc', core: 'gambatte', nombre: 'Pokemon' },
+    // otro:    { rom: 'roms/otro.gbc',    core: 'gambatte', nombre: 'Otro juego' },
+  };
+
+  const juego = juegos[juegoId] || juegos['demo'];
+  document.title = juego.nombre;
+
+  // ---------------------------------------------------------
+  // CONFIGURACIÓN DE EMULATORJS (no debería requerir más cambios)
+  // ---------------------------------------------------------
+  window.EJS_player = '#game';
+  window.EJS_gameName = juego.nombre;
+  window.EJS_biosUrl = '';
+  window.EJS_gameUrl = juego.rom;
+  window.EJS_core = juego.core; // 'gambatte' = Game Boy Color
+  window.EJS_pathtodata = 'https://cdn.jsdelivr.net/npm/emulatorjs@4.2.3/data/';
+  window.EJS_startOnLoaded = true;
+  window.EJS_backgroundColor = '#000000';
+
+  // Guardar progreso automáticamente en el navegador del celular
+  window.EJS_DEBUG_XX = false;
+
+  document.getElementById('cargando').remove();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/emulatorjs@4.2.3/data/loader.js"></script>
+
+<script>
+  // Registrar service worker (necesario para que Chrome/Android ofrezca "instalar")
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(function(err) {
+      console.log('Service worker no registrado:', err);
+    });
+  }
+</script>
+
+</body>
+</html>
