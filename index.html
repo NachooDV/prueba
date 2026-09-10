@@ -9,6 +9,7 @@
 <link rel="manifest" href="manifest.json">
 
 <!-- PWA: iOS (Safari no lee bien manifest.json, necesita estas tags aparte) -->
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="Jugar">
@@ -70,7 +71,7 @@
   window.EJS_biosUrl = '';
   window.EJS_gameUrl = juego.rom;
   window.EJS_core = juego.core; // 'gambatte' = Game Boy Color
-  window.EJS_pathtodata = 'https://cdn.jsdelivr.net/npm/emulatorjs@4.2.3/data/';
+  window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
   window.EJS_startOnLoaded = true;
   window.EJS_backgroundColor = '#000000';
 
@@ -80,7 +81,7 @@
   document.getElementById('cargando').remove();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/emulatorjs@4.2.3/data/loader.js"></script>
+<script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
 
 <script>
   // Registrar service worker (necesario para que Chrome/Android ofrezca "instalar")
