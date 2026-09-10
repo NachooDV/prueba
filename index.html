@@ -41,6 +41,29 @@
     text-align: center;
     padding-top: 40vh;
   }
+
+  /* -----------------------------------------------------------
+     Colores personalizados de los botones táctiles A/B/Start/Select.
+     EmulatorJS genera un div con id="ejs_gamepad_<tu id>" por cada
+     botón definido en EJS_VirtualGamepadSettings. Usamos [id*="..."]
+     para no depender de que el prefijo exacto no cambie entre versiones.
+     ----------------------------------------------------------- */
+  [id*="ejs_gamepad_a"] {
+    background: #e63946 !important;   /* rojo */
+    border: 2px solid #ffffff33 !important;
+  }
+  [id*="ejs_gamepad_b"] {
+    background: #457b9d !important;   /* azul */
+    border: 2px solid #ffffff33 !important;
+  }
+  [id*="ejs_gamepad_start"] {
+    background: #2a2a2a !important;
+    border: 2px solid #888 !important;
+  }
+  [id*="ejs_gamepad_select"] {
+    background: #2a2a2a !important;
+    border: 2px solid #888 !important;
+  }
 </style>
 </head>
 <body>
@@ -81,6 +104,7 @@
   window.EJS_backgroundColor = '#000000';
   window.EJS_startButtonName = 'Toca para jugar';
   window.EJS_alignStartButton = 'center';
+  window.EJS_color = '#e63946'; // color de acento de la interfaz (menús, barra, etc.)
 
   // IMPORTANTE: no forzamos autoarranque (EJS_startOnLoaded).
   // El navegador bloquea el audio hasta que hay un toque real del usuario,
