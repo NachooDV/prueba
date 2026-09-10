@@ -5,19 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Jugar</title>
 
-<!-- PWA: manifest -->
 <link rel="manifest" href="manifest.json">
-
-<!-- PWA: iOS (Safari no lee bien manifest.json, necesita estas tags aparte) -->
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="Jugar">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="theme-color" content="#6b5aa0">
 
-<!-- PWA: Android/Chrome -->
-<meta name="theme-color" content="#6b5b95">
 <style>
+  * { box-sizing: border-box; -webkit-user-select: none; user-select: none; }
+
   html, body {
     margin: 0;
     padding: 0;
@@ -25,248 +23,331 @@
     touch-action: none;
     height: 100%;
     width: 100%;
-    /* Cuerpo morado tipo Game Boy Color */
-    background: linear-gradient(160deg, #8b7ab8 0%, #6b5aa0 40%, #5a4a8f 100%);
+    background: linear-gradient(160deg, #8b7ab8 0%, #6b5aa0 45%, #5a4a8f 100%);
+    font-family: sans-serif;
   }
 
   #cargando {
-    color: #fff;
-    font-family: sans-serif;
-    text-align: center;
-    padding-top: 40vh;
-  }
-
-  /* -----------------------------------------------------------
-     CARCASA DECORATIVA (fondo, no interactiva)
-     Se dibuja detrás de todo con z-index bajo. pointer-events:none
-     para que los toques pasen a través hacia los controles reales.
-     ----------------------------------------------------------- */
-  #carcasa {
     position: fixed;
     inset: 0;
-    z-index: 0;
-    pointer-events: none;
+    color: #fff;
+    text-align: center;
+    padding-top: 40vh;
+    z-index: 999;
   }
 
-  /* Bisel negro de la pantalla, en la parte superior */
-  #bisel {
-    position: absolute;
-    top: 4%;
-    left: 8%;
-    right: 8%;
-    height: 40%;
-    background: #1a1a1a;
-    border-radius: 18px;
-    box-shadow: inset 0 0 0 2px #000, 0 4px 10px rgba(0,0,0,0.4);
+  /* ============== CONSOLA (contenedor completo) ============== */
+  #consola {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3vh 4vw 2vh;
   }
 
-  /* Luz de power */
+  /* Fila superior: luz + logo */
+  #fila-top {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 2vw 1.5vh;
+  }
   #power-luz {
-    position: absolute;
-    top: 6%;
-    left: 12%;
-    width: 10px;
-    height: 10px;
+    width: 9px;
+    height: 9px;
     border-radius: 50%;
     background: #ff3b30;
-    box-shadow: 0 0 6px #ff3b30;
+    box-shadow: 0 0 5px #ff3b30;
+    flex-shrink: 0;
   }
   #power-texto {
-    position: absolute;
-    top: 9.5%;
-    left: 8%;
     color: #ddd;
-    font-family: sans-serif;
-    font-size: 10px;
+    font-size: 9px;
     letter-spacing: 1px;
   }
 
-  /* Logo estilo "GAME BOY COLOR" */
-  #logo {
+  /* ============== BISEL / PANTALLA ============== */
+  #bisel {
+    width: 84vw;
+    max-width: 420px;
+    aspect-ratio: 10 / 10.4;
+    background: #141414;
+    border-radius: 16px;
+    box-shadow: inset 0 0 0 2px #000, 0 6px 14px rgba(0,0,0,0.45);
+    padding: 3%;
+    display: flex;
+    flex-direction: column;
+  }
+  #game-wrap {
+    flex: 1;
+    position: relative;
+    background: #000;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  #game {
     position: absolute;
-    top: 45.5%;
-    left: 0;
-    right: 0;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Logo GAME BOY COLOR */
+  #logo {
     text-align: center;
     font-family: Georgia, serif;
     font-style: italic;
     font-weight: bold;
-    font-size: clamp(16px, 5vw, 26px);
+    font-size: clamp(15px, 4.5vw, 22px);
     color: #fff;
+    margin: 1.6vh 0 1vh;
   }
   #logo .color { color: #f4c542; }
 
-  /* Pastilla "Nintendo" */
+  /* Pastilla Nintendo */
   #nintendo {
-    position: absolute;
-    top: 53%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 34%;
-    height: 4.5%;
     border: 2px solid #4a3d7a;
     border-radius: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: 3px 22px;
     color: #4a3d7a;
     font-family: Georgia, serif;
     font-style: italic;
     font-weight: bold;
-    font-size: clamp(10px, 3vw, 14px);
+    font-size: clamp(10px, 3vw, 13px);
+    margin-bottom: 2vh;
   }
 
-  /* Rejilla de altavoz */
-  #altavoz {
+  /* ============== PANEL DE CONTROLES (nuestro, no el de EmulatorJS) ============== */
+  #controles {
+    width: 100%;
+    max-width: 460px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  #fila-controles {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2vw;
+  }
+
+  /* D-pad */
+  #dpad {
+    position: relative;
+    width: 128px;
+    height: 128px;
+    flex-shrink: 0;
+  }
+  .dpad-btn {
     position: absolute;
-    bottom: 4%;
-    right: 8%;
-    width: 15%;
+    background: #4a4560;
+    box-shadow: 0 3px 4px rgba(0,0,0,0.4);
+  }
+  .dpad-btn:active { background: #3a3550; }
+  .dpad-btn.up    { top: 0;    left: 44px; width: 40px; height: 44px; border-radius: 6px 6px 0 0; }
+  .dpad-btn.down  { bottom: 0; left: 44px; width: 40px; height: 44px; border-radius: 0 0 6px 6px; }
+  .dpad-btn.left  { top: 44px; left: 0;    width: 44px; height: 40px; border-radius: 6px 0 0 6px; }
+  .dpad-btn.right { top: 44px; right: 0;   width: 44px; height: 40px; border-radius: 0 6px 6px 0; }
+  .dpad-btn.centro{ top: 44px; left: 44px; width: 40px; height: 40px; background: #4a4560; }
+  .dpad-arrow {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2a2540;
+    font-size: 16px;
+    pointer-events: none;
+  }
+
+  /* A / B */
+  #ab-group {
+    position: relative;
+    width: 130px;
+    height: 90px;
+    flex-shrink: 0;
+  }
+  .btn-redondo {
+    position: absolute;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #4a4560, #2a2540);
+    box-shadow: 0 3px 5px rgba(0,0,0,0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9a93b5;
+    font-weight: bold;
+    font-size: 18px;
+  }
+  .btn-redondo:active { filter: brightness(0.85); }
+  #btn-a { top: 0;  right: 0; }
+  #btn-b { top: 34px; left: 0; }
+
+  /* Start / Select */
+  #fila-start-select {
+    display: flex;
+    justify-content: center;
+    gap: 22px;
+    margin-top: 2vh;
+  }
+  .grupo-pastilla { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+  .btn-pastilla {
+    width: 46px;
+    height: 16px;
+    border-radius: 10px;
+    background: #4a4560;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.4);
+    transform: rotate(-20deg);
+  }
+  .btn-pastilla:active { filter: brightness(0.85); }
+  .etiqueta-pastilla {
+    color: #d8d4e8;
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+
+  /* Altavoz decorativo */
+  #altavoz {
+    align-self: flex-end;
+    margin-top: -30px;
+    margin-right: 4vw;
+    width: 60px;
     aspect-ratio: 1;
     background-image: radial-gradient(#4a3d7a 30%, transparent 31%);
-    background-size: 20% 20%;
-    opacity: 0.6;
+    background-size: 22% 22%;
+    opacity: 0.55;
   }
 
-  /* Textos decorativos SELECT / START (los botones reales van encima) */
-  .etiqueta-decorativa {
-    position: absolute;
-    bottom: 5.5%;
-    color: #4a3d7a;
-    font-family: sans-serif;
-    font-size: 10px;
-    letter-spacing: 1px;
-    text-align: center;
-    width: 60px;
-  }
-  #etiqueta-select { left: 26%; }
-  #etiqueta-start  { left: 42%; }
-
-  /* -----------------------------------------------------------
-     Contenedor real del emulador (EJS_player).
-     Ocupa toda la pantalla; el propio EmulatorJS centra el
-     canvas del juego dentro del área del bisel gracias a que
-     coincide en proporción. Los controles táctiles van encima.
-     ----------------------------------------------------------- */
-  #game {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    height: 100dvh;
-    z-index: 1;
-    background: transparent !important;
-  }
-
-  /* -----------------------------------------------------------
-     Restyle de los botones táctiles para que combinen con la carcasa
-     ----------------------------------------------------------- */
-  [id*="ejs_gamepad_a"] {
-    background: radial-gradient(circle at 35% 30%, #3a3a3a, #1a1a1a) !important;
-    border: 2px solid #000 !important;
-    border-radius: 50% !important;
-    color: #999 !important;
-    box-shadow: 0 3px 4px rgba(0,0,0,0.5) !important;
-  }
-  [id*="ejs_gamepad_b"] {
-    background: radial-gradient(circle at 35% 30%, #3a3a3a, #1a1a1a) !important;
-    border: 2px solid #000 !important;
-    border-radius: 50% !important;
-    color: #999 !important;
-    box-shadow: 0 3px 4px rgba(0,0,0,0.5) !important;
-  }
-  [id*="ejs_gamepad_start"],
-  [id*="ejs_gamepad_select"] {
-    background: #1a1a1a !important;
-    border: 1px solid #000 !important;
-    border-radius: 12px !important;
-    color: transparent !important; /* el texto real lo da la etiqueta decorativa */
-    box-shadow: 0 2px 3px rgba(0,0,0,0.5) !important;
-  }
-  [id*="ejs_gamepad_dpad"] {
-    filter: drop-shadow(0 3px 3px rgba(0,0,0,0.5));
-  }
+  /* Ocultamos por completo el gamepad virtual nativo de EmulatorJS:
+     nosotros ya dibujamos el nuestro arriba. */
+  [id*="ejs_gamepad"] { display: none !important; }
 </style>
 </head>
 <body>
 
 <div id="cargando">Cargando emulador...</div>
 
-<!-- Carcasa decorativa -->
-<div id="carcasa">
-  <div id="bisel"></div>
-  <div id="power-luz"></div>
-  <div id="power-texto">POWER</div>
+<div id="consola">
+
+  <div id="fila-top">
+    <div id="power-luz"></div>
+    <div id="power-texto">POWER</div>
+  </div>
+
+  <div id="bisel">
+    <div id="game-wrap">
+      <div id="game"></div>
+    </div>
+  </div>
+
   <div id="logo">GAME BOY <span class="color">COLOR</span></div>
   <div id="nintendo">Nintendo</div>
-  <div id="altavoz"></div>
-  <div class="etiqueta-decorativa" id="etiqueta-select">SELECT</div>
-  <div class="etiqueta-decorativa" id="etiqueta-start">START</div>
-</div>
 
-<div id="game"></div>
+  <div id="controles">
+    <div id="fila-controles">
+      <div id="dpad">
+        <div class="dpad-btn centro"></div>
+        <div class="dpad-btn up"    data-key="ArrowUp"><span class="dpad-arrow">▲</span></div>
+        <div class="dpad-btn down"  data-key="ArrowDown"><span class="dpad-arrow">▼</span></div>
+        <div class="dpad-btn left"  data-key="ArrowLeft"><span class="dpad-arrow">◀</span></div>
+        <div class="dpad-btn right" data-key="ArrowRight"><span class="dpad-arrow">▶</span></div>
+      </div>
+
+      <div id="altavoz"></div>
+
+      <div id="ab-group">
+        <div class="btn-redondo" id="btn-a" data-key="x">A</div>
+        <div class="btn-redondo" id="btn-b" data-key="z">B</div>
+      </div>
+    </div>
+
+    <div id="fila-start-select">
+      <div class="grupo-pastilla">
+        <div class="btn-pastilla" data-key="v"></div>
+        <div class="etiqueta-pastilla">SELECT</div>
+      </div>
+      <div class="grupo-pastilla">
+        <div class="btn-pastilla" data-key="Enter"></div>
+        <div class="etiqueta-pastilla">START</div>
+      </div>
+    </div>
+  </div>
+
+</div>
 
 <script>
   // ---------------------------------------------------------
-  // CONFIGURACIÓN QUE DEBES AJUSTAR TÚ:
-  // ---------------------------------------------------------
-
   // 1) Selección de juego según parámetro en la URL
-  //    Ej: tusitio.com/jugar.html?id=pokemon
+  // ---------------------------------------------------------
   const params = new URLSearchParams(window.location.search);
   const juegoId = params.get('id') || 'demo';
 
-  // 2) Mapa de juegos: id -> ruta de la ROM
-  //    Sube tus ROMs a tu propio hosting (mismo servidor, carpeta /roms/)
   const juegos = {
-    demo:    { rom: 'roms/demo.gbc',    core: 'gambatte', nombre: 'Juego Demo' },
+    demo: { rom: 'roms/demo.gbc', core: 'gambatte', nombre: 'Juego Demo' },
     // pokemon: { rom: 'roms/pokemon.gbc', core: 'gambatte', nombre: 'Pokemon' },
-    // otro:    { rom: 'roms/otro.gbc',    core: 'gambatte', nombre: 'Otro juego' },
   };
 
   const juego = juegos[juegoId] || juegos['demo'];
   document.title = juego.nombre;
 
   // ---------------------------------------------------------
-  // CONFIGURACIÓN DE EMULATORJS
+  // 2) Configuración de EmulatorJS
+  //    Ocultamos su gamepad virtual (CSS) porque usamos el nuestro.
   // ---------------------------------------------------------
   window.EJS_player = '#game';
   window.EJS_gameName = juego.nombre;
   window.EJS_biosUrl = '';
   window.EJS_gameUrl = juego.rom;
-  window.EJS_core = juego.core; // 'gambatte' = Game Boy Color
+  window.EJS_core = juego.core;
   window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
-  window.EJS_backgroundColor = 'transparent';
+  window.EJS_backgroundColor = '#000000';
   window.EJS_startButtonName = 'Toca para jugar';
   window.EJS_alignStartButton = 'center';
   window.EJS_color = '#6b5aa0';
-
-  // IMPORTANTE: no forzamos autoarranque (EJS_startOnLoaded).
-  // El navegador bloquea el audio hasta que hay un toque real del usuario,
-  // así que dejamos que EmulatorJS muestre su botón de inicio propio.
-
-  // Layout de botones táctiles: dpad + A/B + Start/Select.
-  // input_value: 0=A, 8=B, 2=Select, 3=Start, 4-7=dpad
-  window.EJS_VirtualGamepadSettings = [
-    { type: "dpad", location: "left", left: "18%", top: "68%", joystickInput: false, inputValues: [4, 5, 6, 7] },
-
-    { type: "button", text: "A", id: "a", location: "right", left: 78, top: 55, bold: true, input_value: 0 },
-    { type: "button", text: "B", id: "b", location: "right", left: 35, top: 68, bold: true, input_value: 8 },
-
-    { type: "button", text: "Select", id: "select", location: "center", left: -22, top: 87, fontSize: 10, input_value: 2 },
-    { type: "button", text: "Start",  id: "start",  location: "center", left: 12,  top: 87, fontSize: 10, input_value: 3 }
-  ];
+  window.EJS_Buttons = { gamepad: false }; // no mostrar el ícono de "activar gamepad"
 
   document.getElementById('cargando').remove();
+
+  // ---------------------------------------------------------
+  // 3) Nuestros propios botones táctiles → simulan teclado
+  //    (mapeo por defecto de EmulatorJS: flechas, x=A, z=B,
+  //     Enter=Start, v=Select)
+  // ---------------------------------------------------------
+  function simularTecla(tipo, key) {
+    const evento = new KeyboardEvent(tipo, { key: key, bubbles: true });
+    document.dispatchEvent(evento);
+  }
+
+  document.querySelectorAll('[data-key]').forEach(function (el) {
+    const key = el.getAttribute('data-key');
+
+    el.addEventListener('touchstart', function (e) {
+      e.preventDefault();
+      simularTecla('keydown', key);
+    }, { passive: false });
+
+    el.addEventListener('touchend', function (e) {
+      e.preventDefault();
+      simularTecla('keyup', key);
+    }, { passive: false });
+
+    // También con mouse, útil para probar en PC
+    el.addEventListener('mousedown', function () { simularTecla('keydown', key); });
+    el.addEventListener('mouseup',   function () { simularTecla('keyup', key); });
+  });
 </script>
 
 <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
 
 <script>
-  // Registrar service worker (necesario para que Chrome/Android ofrezca "instalar")
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js').catch(function(err) {
+    navigator.serviceWorker.register('sw.js').catch(function (err) {
       console.log('Service worker no registrado:', err);
     });
   }
