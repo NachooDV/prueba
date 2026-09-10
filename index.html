@@ -36,56 +36,25 @@
     z-index: 999;
   }
 
-  /* ============== CONSOLA (contenedor completo) ============== */
+  /* ============== LAYOUT GENERAL ============== */
   #consola {
     position: fixed;
     inset: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 3vh 4vw 2vh;
   }
 
-  /* Fila superior: luz + logo */
-  #fila-top {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 0 2vw 1.5vh;
-  }
-  #power-luz {
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    background: #ff3b30;
-    box-shadow: 0 0 5px #ff3b30;
-    flex-shrink: 0;
-  }
-  #power-texto {
-    color: #ddd;
-    font-size: 9px;
-    letter-spacing: 1px;
-  }
-
-  /* ============== BISEL / PANTALLA ============== */
+  /* ============== PANTALLA (bisel grande) ============== */
   #bisel {
-    width: 84vw;
-    max-width: 420px;
-    aspect-ratio: 10 / 10.4;
-    background: #141414;
-    border-radius: 16px;
-    box-shadow: inset 0 0 0 2px #000, 0 6px 14px rgba(0,0,0,0.45);
-    padding: 3%;
+    width: 100%;
+    flex: 0 0 56%;
+    background: #000;
     display: flex;
-    flex-direction: column;
   }
   #game-wrap {
     flex: 1;
     position: relative;
-    background: #000;
-    border-radius: 4px;
-    overflow: hidden;
   }
   #game {
     position: absolute;
@@ -94,52 +63,29 @@
     height: 100%;
   }
 
-  /* Logo GAME BOY COLOR */
-  #logo {
-    text-align: center;
-    font-family: Georgia, serif;
-    font-style: italic;
-    font-weight: bold;
-    font-size: clamp(15px, 4.5vw, 22px);
-    color: #fff;
-    margin: 1.6vh 0 1vh;
-  }
-  #logo .color { color: #f4c542; }
-
-  /* Pastilla Nintendo */
-  #nintendo {
-    border: 2px solid #4a3d7a;
-    border-radius: 20px;
-    padding: 3px 22px;
-    color: #4a3d7a;
-    font-family: Georgia, serif;
-    font-style: italic;
-    font-weight: bold;
-    font-size: clamp(10px, 3vw, 13px);
-    margin-bottom: 2vh;
-  }
-
-  /* ============== PANEL DE CONTROLES (nuestro, no el de EmulatorJS) ============== */
+  /* ============== PANEL DE CONTROLES ============== */
   #controles {
+    flex: 1;
     width: 100%;
     max-width: 460px;
-    flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 3vh;
+    padding: 2vh 6vw;
   }
+
   #fila-controles {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 2vw;
   }
 
   /* D-pad */
   #dpad {
     position: relative;
-    width: 128px;
-    height: 128px;
+    width: 130px;
+    height: 130px;
     flex-shrink: 0;
   }
   .dpad-btn {
@@ -147,12 +93,12 @@
     background: #4a4560;
     box-shadow: 0 3px 4px rgba(0,0,0,0.4);
   }
-  .dpad-btn:active { background: #3a3550; }
-  .dpad-btn.up    { top: 0;    left: 44px; width: 40px; height: 44px; border-radius: 6px 6px 0 0; }
-  .dpad-btn.down  { bottom: 0; left: 44px; width: 40px; height: 44px; border-radius: 0 0 6px 6px; }
-  .dpad-btn.left  { top: 44px; left: 0;    width: 44px; height: 40px; border-radius: 6px 0 0 6px; }
-  .dpad-btn.right { top: 44px; right: 0;   width: 44px; height: 40px; border-radius: 0 6px 6px 0; }
-  .dpad-btn.centro{ top: 44px; left: 44px; width: 40px; height: 40px; background: #4a4560; }
+  .dpad-btn:active { background: #38334a; }
+  .dpad-btn.up    { top: 0;    left: 45px; width: 40px; height: 45px; border-radius: 6px 6px 0 0; }
+  .dpad-btn.down  { bottom: 0; left: 45px; width: 40px; height: 45px; border-radius: 0 0 6px 6px; }
+  .dpad-btn.left  { top: 45px; left: 0;    width: 45px; height: 40px; border-radius: 6px 0 0 6px; }
+  .dpad-btn.right { top: 45px; right: 0;   width: 45px; height: 40px; border-radius: 0 6px 6px 0; }
+  .dpad-btn.centro{ top: 45px; left: 45px; width: 40px; height: 40px; background: #4a4560; }
   .dpad-arrow {
     position: absolute;
     inset: 0;
@@ -160,73 +106,55 @@
     align-items: center;
     justify-content: center;
     color: #2a2540;
-    font-size: 16px;
+    font-size: 17px;
     pointer-events: none;
   }
 
   /* A / B */
   #ab-group {
     position: relative;
-    width: 130px;
-    height: 90px;
+    width: 140px;
+    height: 95px;
     flex-shrink: 0;
   }
   .btn-redondo {
     position: absolute;
-    width: 58px;
-    height: 58px;
+    width: 62px;
+    height: 62px;
     border-radius: 50%;
     background: radial-gradient(circle at 35% 30%, #4a4560, #2a2540);
     box-shadow: 0 3px 5px rgba(0,0,0,0.45);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #9a93b5;
+    color: #cfc9e6;
     font-weight: bold;
-    font-size: 18px;
+    font-size: 19px;
   }
   .btn-redondo:active { filter: brightness(0.85); }
-  #btn-a { top: 0;  right: 0; }
-  #btn-b { top: 34px; left: 0; }
+  #btn-a { top: 0;    right: 0; }
+  #btn-b { top: 38px; left: 0; }
 
   /* Start / Select */
   #fila-start-select {
     display: flex;
     justify-content: center;
-    gap: 22px;
-    margin-top: 2vh;
+    gap: 28px;
   }
-  .grupo-pastilla { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+  .grupo-pastilla { display: flex; flex-direction: column; align-items: center; gap: 6px; }
   .btn-pastilla {
-    width: 46px;
-    height: 16px;
+    width: 50px;
+    height: 18px;
     border-radius: 10px;
     background: #4a4560;
     box-shadow: 0 2px 3px rgba(0,0,0,0.4);
-    transform: rotate(-20deg);
   }
   .btn-pastilla:active { filter: brightness(0.85); }
   .etiqueta-pastilla {
-    color: #d8d4e8;
-    font-size: 9px;
+    color: #ece9f7;
+    font-size: 10px;
     letter-spacing: 1px;
   }
-
-  /* Altavoz decorativo */
-  #altavoz {
-    align-self: flex-end;
-    margin-top: -30px;
-    margin-right: 4vw;
-    width: 60px;
-    aspect-ratio: 1;
-    background-image: radial-gradient(#4a3d7a 30%, transparent 31%);
-    background-size: 22% 22%;
-    opacity: 0.55;
-  }
-
-  /* Ocultamos por completo el gamepad virtual nativo de EmulatorJS:
-     nosotros ya dibujamos el nuestro arriba. */
-  [id*="ejs_gamepad"] { display: none !important; }
 </style>
 </head>
 <body>
@@ -235,19 +163,11 @@
 
 <div id="consola">
 
-  <div id="fila-top">
-    <div id="power-luz"></div>
-    <div id="power-texto">POWER</div>
-  </div>
-
   <div id="bisel">
     <div id="game-wrap">
       <div id="game"></div>
     </div>
   </div>
-
-  <div id="logo">GAME BOY <span class="color">COLOR</span></div>
-  <div id="nintendo">Nintendo</div>
 
   <div id="controles">
     <div id="fila-controles">
@@ -258,8 +178,6 @@
         <div class="dpad-btn left"  data-key="ArrowLeft"><span class="dpad-arrow">◀</span></div>
         <div class="dpad-btn right" data-key="ArrowRight"><span class="dpad-arrow">▶</span></div>
       </div>
-
-      <div id="altavoz"></div>
 
       <div id="ab-group">
         <div class="btn-redondo" id="btn-a" data-key="x">A</div>
@@ -298,7 +216,6 @@
 
   // ---------------------------------------------------------
   // 2) Configuración de EmulatorJS
-  //    Ocultamos su gamepad virtual (CSS) porque usamos el nuestro.
   // ---------------------------------------------------------
   window.EJS_player = '#game';
   window.EJS_gameName = juego.nombre;
@@ -310,12 +227,38 @@
   window.EJS_startButtonName = 'Toca para jugar';
   window.EJS_alignStartButton = 'center';
   window.EJS_color = '#6b5aa0';
-  window.EJS_Buttons = { gamepad: false }; // no mostrar el ícono de "activar gamepad"
+
+  // CLAVE: lista vacía = EmulatorJS no dibuja NINGÚN botón táctil propio.
+  // Usamos exclusivamente nuestros botones de abajo.
+  window.EJS_VirtualGamepadSettings = [];
+
+  // Ocultamos casi toda la barra de herramientas superior (menú hamburguesa),
+  // ya que no la necesitamos para "llegar y jugar".
+  window.EJS_Buttons = {
+    playPause: false,
+    restart: false,
+    mute: false,
+    settings: false,
+    fullscreen: false,
+    saveState: false,
+    loadState: false,
+    screenRecord: false,
+    gamepad: false,
+    cheat: false,
+    volume: false,
+    saveSavFiles: false,
+    loadSavFiles: false,
+    quickSave: false,
+    quickLoad: false,
+    screenshot: false,
+    cacheManager: false,
+    exitEmulation: false
+  };
 
   document.getElementById('cargando').remove();
 
   // ---------------------------------------------------------
-  // 3) Nuestros propios botones táctiles → simulan teclado
+  // 3) Nuestros botones táctiles → simulan teclado
   //    (mapeo por defecto de EmulatorJS: flechas, x=A, z=B,
   //     Enter=Start, v=Select)
   // ---------------------------------------------------------
@@ -337,7 +280,6 @@
       simularTecla('keyup', key);
     }, { passive: false });
 
-    // También con mouse, útil para probar en PC
     el.addEventListener('mousedown', function () { simularTecla('keydown', key); });
     el.addEventListener('mouseup',   function () { simularTecla('keyup', key); });
   });
