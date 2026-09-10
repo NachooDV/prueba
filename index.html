@@ -14,203 +14,64 @@
 <meta name="theme-color" content="#6b5aa0">
 
 <style>
-  * { box-sizing: border-box; -webkit-user-select: none; user-select: none; }
-
   html, body {
     margin: 0;
     padding: 0;
+    background: #000;
     overflow: hidden;
     touch-action: none;
     height: 100%;
     width: 100%;
-    background: linear-gradient(160deg, #8b7ab8 0%, #6b5aa0 45%, #5a4a8f 100%);
-    font-family: sans-serif;
-  }
-
-  #cargando {
-    position: fixed;
-    inset: 0;
-    color: #fff;
-    text-align: center;
-    padding-top: 40vh;
-    z-index: 999;
-  }
-
-  /* ============== LAYOUT GENERAL ============== */
-  #consola {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  /* ============== PANTALLA (bisel grande) ============== */
-  #bisel {
-    width: 100%;
-    flex: 0 0 56%;
-    background: #000;
-    display: flex;
-  }
-  #game-wrap {
-    flex: 1;
-    position: relative;
   }
   #game {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;       /* fallback */
+    height: 100dvh;      /* alto real visible en móviles */
   }
-
-  /* ============== PANEL DE CONTROLES ============== */
-  #controles {
-    flex: 1;
-    width: 100%;
-    max-width: 460px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 3vh;
-    padding: 2vh 6vw;
-  }
-
-  #fila-controles {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  /* D-pad */
-  #dpad {
-    position: relative;
-    width: 130px;
-    height: 130px;
-    flex-shrink: 0;
-  }
-  .dpad-btn {
-    position: absolute;
-    background: #4a4560;
-    box-shadow: 0 3px 4px rgba(0,0,0,0.4);
-  }
-  .dpad-btn:active { background: #38334a; }
-  .dpad-btn.up    { top: 0;    left: 45px; width: 40px; height: 45px; border-radius: 6px 6px 0 0; }
-  .dpad-btn.down  { bottom: 0; left: 45px; width: 40px; height: 45px; border-radius: 0 0 6px 6px; }
-  .dpad-btn.left  { top: 45px; left: 0;    width: 45px; height: 40px; border-radius: 6px 0 0 6px; }
-  .dpad-btn.right { top: 45px; right: 0;   width: 45px; height: 40px; border-radius: 0 6px 6px 0; }
-  .dpad-btn.centro{ top: 45px; left: 45px; width: 40px; height: 40px; background: #4a4560; }
-  .dpad-arrow {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #2a2540;
-    font-size: 17px;
-    pointer-events: none;
-  }
-
-  /* A / B */
-  #ab-group {
-    position: relative;
-    width: 140px;
-    height: 95px;
-    flex-shrink: 0;
-  }
-  .btn-redondo {
-    position: absolute;
-    width: 62px;
-    height: 62px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 35% 30%, #4a4560, #2a2540);
-    box-shadow: 0 3px 5px rgba(0,0,0,0.45);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #cfc9e6;
-    font-weight: bold;
-    font-size: 19px;
-  }
-  .btn-redondo:active { filter: brightness(0.85); }
-  #btn-a { top: 0;    right: 0; }
-  #btn-b { top: 38px; left: 0; }
-
-  /* Start / Select */
-  #fila-start-select {
-    display: flex;
-    justify-content: center;
-    gap: 28px;
-  }
-  .grupo-pastilla { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-  .btn-pastilla {
-    width: 50px;
-    height: 18px;
-    border-radius: 10px;
-    background: #4a4560;
-    box-shadow: 0 2px 3px rgba(0,0,0,0.4);
-  }
-  .btn-pastilla:active { filter: brightness(0.85); }
-  .etiqueta-pastilla {
-    color: #ece9f7;
-    font-size: 10px;
-    letter-spacing: 1px;
+  #cargando {
+    color: #fff;
+    font-family: sans-serif;
+    text-align: center;
+    padding-top: 40vh;
   }
 
   /* -----------------------------------------------------------
-     Ocultar el gamepad virtual NATIVO de EmulatorJS.
-     Estos son los nombres de clase reales de su código fuente
-     (no un id inventado como intentamos antes).
+     Solo ESTILO visual sobre los botones NATIVOS de EmulatorJS.
+     No los ocultamos ni reemplazamos: seguimos usando su sistema
+     real (EJS_VirtualGamepadSettings), así garantizamos que el
+     click de "descargar juego" y todo lo demás sigue intacto.
      ----------------------------------------------------------- */
-  .ejs_virtualGamepad_parent,
-  .ejs_virtualGamepad_top,
-  .ejs_virtualGamepad_bottom,
-  .ejs_virtualGamepad_left,
-  .ejs_virtualGamepad_right {
-    display: none !important;
+  [id*="ejs_gamepad_a"] {
+    background: radial-gradient(circle at 35% 30%, #8b7ab8, #5a4a8f) !important;
+    border: 2px solid #3a2f5c !important;
+    border-radius: 50% !important;
+    color: #fff !important;
+    box-shadow: 0 3px 5px rgba(0,0,0,0.5) !important;
+  }
+  [id*="ejs_gamepad_b"] {
+    background: radial-gradient(circle at 35% 30%, #8b7ab8, #5a4a8f) !important;
+    border: 2px solid #3a2f5c !important;
+    border-radius: 50% !important;
+    color: #fff !important;
+    box-shadow: 0 3px 5px rgba(0,0,0,0.5) !important;
+  }
+  [id*="ejs_gamepad_start"],
+  [id*="ejs_gamepad_select"] {
+    background: #5a4a8f !important;
+    border: 1px solid #3a2f5c !important;
+    border-radius: 12px !important;
+    color: #fff !important;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.5) !important;
   }
 </style>
 </head>
 <body>
 
 <div id="cargando">Cargando emulador...</div>
-
-<div id="consola">
-
-  <div id="bisel">
-    <div id="game-wrap">
-      <div id="game"></div>
-    </div>
-  </div>
-
-  <div id="controles">
-    <div id="fila-controles">
-      <div id="dpad">
-        <div class="dpad-btn centro"></div>
-        <div class="dpad-btn up"    data-key="ArrowUp"><span class="dpad-arrow">▲</span></div>
-        <div class="dpad-btn down"  data-key="ArrowDown"><span class="dpad-arrow">▼</span></div>
-        <div class="dpad-btn left"  data-key="ArrowLeft"><span class="dpad-arrow">◀</span></div>
-        <div class="dpad-btn right" data-key="ArrowRight"><span class="dpad-arrow">▶</span></div>
-      </div>
-
-      <div id="ab-group">
-        <div class="btn-redondo" id="btn-a" data-key="x">A</div>
-        <div class="btn-redondo" id="btn-b" data-key="z">B</div>
-      </div>
-    </div>
-
-    <div id="fila-start-select">
-      <div class="grupo-pastilla">
-        <div class="btn-pastilla" data-key="v"></div>
-        <div class="etiqueta-pastilla">SELECT</div>
-      </div>
-      <div class="grupo-pastilla">
-        <div class="btn-pastilla" data-key="Enter"></div>
-        <div class="etiqueta-pastilla">START</div>
-      </div>
-    </div>
-  </div>
-
-</div>
+<div id="game"></div>
 
 <script>
   // ---------------------------------------------------------
@@ -241,74 +102,24 @@
   window.EJS_alignStartButton = 'center';
   window.EJS_color = '#6b5aa0';
 
-  // CLAVE: lista vacía = EmulatorJS no dibuja NINGÚN botón táctil propio.
-  // Usamos exclusivamente nuestros botones de abajo.
-  window.EJS_VirtualGamepadSettings = [];
+  // No forzamos autoarranque: EmulatorJS muestra su propio botón de
+  // inicio, necesario para desbloquear audio con un toque real.
 
-  // Ocultamos casi toda la barra de herramientas superior (menú hamburguesa),
-  // ya que no la necesitamos para "llegar y jugar".
-  window.EJS_Buttons = {
-    playPause: false,
-    restart: false,
-    mute: false,
-    settings: false,
-    fullscreen: false,
-    saveState: false,
-    loadState: false,
-    screenRecord: false,
-    gamepad: false,
-    cheat: false,
-    volume: false,
-    saveSavFiles: false,
-    loadSavFiles: false,
-    quickSave: false,
-    quickLoad: false,
-    screenshot: false,
-    cacheManager: false,
-    exitEmulation: false
-  };
+  // Nuestro propio layout de botones (input_value: 0=A, 8=B, 2=Select, 3=Start, 4-7=dpad)
+  window.EJS_VirtualGamepadSettings = [
+    { type: "dpad", location: "left", left: "18%", top: "50%", joystickInput: false, inputValues: [4, 5, 6, 7] },
+
+    { type: "button", text: "A", id: "a", location: "right", left: 78, top: 30, bold: true, input_value: 0 },
+    { type: "button", text: "B", id: "b", location: "right", left: 35, top: 43, bold: true, input_value: 8 },
+
+    { type: "button", text: "Select", id: "select", location: "center", left: -22, top: 68, fontSize: 11, input_value: 2 },
+    { type: "button", text: "Start",  id: "start",  location: "center", left: 12,  top: 68, fontSize: 11, input_value: 3 }
+  ];
 
   document.getElementById('cargando').remove();
-
-  // ---------------------------------------------------------
-  // 3) Nuestros botones táctiles → simulan teclado
-  //    (mapeo por defecto de EmulatorJS: flechas, x=A, z=B,
-  //     Enter=Start, v=Select)
-  // ---------------------------------------------------------
-  function simularTecla(tipo, key) {
-    const evento = new KeyboardEvent(tipo, { key: key, bubbles: true });
-    document.dispatchEvent(evento);
-  }
-
-  document.querySelectorAll('[data-key]').forEach(function (el) {
-    const key = el.getAttribute('data-key');
-
-    el.addEventListener('touchstart', function (e) {
-      e.preventDefault();
-      simularTecla('keydown', key);
-    }, { passive: false });
-
-    el.addEventListener('touchend', function (e) {
-      e.preventDefault();
-      simularTecla('keyup', key);
-    }, { passive: false });
-
-    el.addEventListener('mousedown', function () { simularTecla('keydown', key); });
-    el.addEventListener('mouseup',   function () { simularTecla('keyup', key); });
-  });
 </script>
 
 <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
-
-<script>
-  // Service worker DESACTIVADO temporalmente: sospechamos que estaba
-  // interceptando las descargas grandes del core/ROM y trabándolas.
-  // if ('serviceWorker' in navigator) {
-  //   navigator.serviceWorker.register('sw.js').catch(function (err) {
-  //     console.log('Service worker no registrado:', err);
-  //   });
-  // }
-</script>
 
 </body>
 </html>
