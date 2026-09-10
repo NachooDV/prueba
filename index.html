@@ -22,12 +22,18 @@
     margin: 0;
     padding: 0;
     background: #000;
-    height: 100%;
     overflow: hidden;
+    touch-action: none;
+    height: 100%;
+    width: 100%;
   }
   #game {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100vh;       /* fallback para navegadores viejos */
+    height: 100dvh;      /* alto real visible, sin contar barra de direcciones */
   }
   #cargando {
     color: #fff;
@@ -86,15 +92,15 @@
   // 0=A, 1=B(inferior), 2=Select, 3=Start, 4-7=dpad, 8=B, 9=Y
   window.EJS_VirtualGamepadSettings = [
     // D-pad a la izquierda
-    { type: "dpad", location: "left", left: "20%", top: "60%", joystickInput: false, inputValues: [4, 5, 6, 7] },
+    { type: "dpad", location: "left", left: "20%", top: "50%", joystickInput: false, inputValues: [4, 5, 6, 7] },
 
     // Botones A/B a la derecha, estilo GBC (A arriba-derecha, B abajo-izquierda del grupo)
-    { type: "button", text: "A", id: "a", location: "right", left: 75, top: 15, bold: true, input_value: 0 },
-    { type: "button", text: "B", id: "b", location: "right", left: 30, top: 55, bold: true, input_value: 8 },
+    { type: "button", text: "A", id: "a", location: "right", left: 75, top: 5, bold: true, input_value: 0 },
+    { type: "button", text: "B", id: "b", location: "right", left: 30, top: 45, bold: true, input_value: 8 },
 
-    // Start y Select centrados abajo, separados y con texto legible
-    { type: "button", text: "Select", id: "select", location: "center", left: -18, top: 85, fontSize: 13, input_value: 2 },
-    { type: "button", text: "Start", id: "start", location: "center", left: 18, top: 85, fontSize: 13, input_value: 3 }
+    // Start y Select centrados, un poco más arriba del borde inferior
+    { type: "button", text: "Select", id: "select", location: "center", left: -18, top: 70, fontSize: 13, input_value: 2 },
+    { type: "button", text: "Start", id: "start", location: "center", left: 18, top: 70, fontSize: 13, input_value: 3 }
   ];
 
   document.getElementById('cargando').remove();
