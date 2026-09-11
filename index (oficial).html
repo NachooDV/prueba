@@ -39,30 +39,32 @@
   }
 
   /* -----------------------------------------------------------
-     Paleta "Game Boy original" (DMG): gris/crema, D-pad gris oscuro,
-     A/B vinotinto redondos, Start/Select grises en cápsula.
-     Solo estilo — no tocamos EJS_VirtualGamepadSettings (posiciones).
+     Solo ESTILO visual sobre los botones NATIVOS de EmulatorJS.
+     No los ocultamos ni reemplazamos: seguimos usando su sistema
+     real (EJS_VirtualGamepadSettings), así garantizamos que el
+     click de "descargar juego" y todo lo demás sigue intacto.
      ----------------------------------------------------------- */
-  [id*="ejs_gamepad_a"],
-  [id*="ejs_gamepad_b"] {
-    background: radial-gradient(circle at 35% 30%, #8b3a4a, #5e2230) !important;
-    border: 2px solid #3a1620 !important;
+  [id*="ejs_gamepad_a"] {
+    background: radial-gradient(circle at 35% 30%, #8b7ab8, #5a4a8f) !important;
+    border: 2px solid #3a2f5c !important;
     border-radius: 50% !important;
-    color: #f0d8dc !important;
-    font-weight: bold !important;
+    color: #fff !important;
+    box-shadow: 0 3px 5px rgba(0,0,0,0.5) !important;
+  }
+  [id*="ejs_gamepad_b"] {
+    background: radial-gradient(circle at 35% 30%, #8b7ab8, #5a4a8f) !important;
+    border: 2px solid #3a2f5c !important;
+    border-radius: 50% !important;
+    color: #fff !important;
     box-shadow: 0 3px 5px rgba(0,0,0,0.5) !important;
   }
   [id*="ejs_gamepad_start"],
   [id*="ejs_gamepad_select"] {
-    background: #6e6a63 !important;
-    border: 1px solid #3f3c37 !important;
-    border-radius: 14px !important;
-    color: #d8d4c8 !important;
+    background: #5a4a8f !important;
+    border: 1px solid #3a2f5c !important;
+    border-radius: 12px !important;
+    color: #fff !important;
     box-shadow: 0 2px 3px rgba(0,0,0,0.5) !important;
-    transform: rotate(-25deg) !important;
-  }
-  [id*="ejs_gamepad_dpad"] {
-    filter: brightness(0.75) saturate(0.3) !important;
   }
 </style>
 </head>
@@ -98,20 +100,20 @@
   window.EJS_backgroundColor = '#000000';
   window.EJS_startButtonName = 'Toca para jugar';
   window.EJS_alignStartButton = 'center';
-  window.EJS_color = '#6e6a63';
+  window.EJS_color = '#6b5aa0';
 
   // No forzamos autoarranque: EmulatorJS muestra su propio botón de
   // inicio, necesario para desbloquear audio con un toque real.
 
   // Nuestro propio layout de botones (input_value: 0=A, 8=B, 2=Select, 3=Start, 4-7=dpad)
   window.EJS_VirtualGamepadSettings = [
-    { type: "dpad", location: "left", left: "18%", top: "50%", joystickInput: false, inputValues: [4, 5, 6, 7] },
+    { type: "dpad", location: "left", left: "25%", top: "50%", joystickInput: false, inputValues: [4, 5, 6, 7] },
 
-    { type: "button", text: "A", id: "a", location: "right", left: 78, top: 30, bold: true, input_value: 0 },
-    { type: "button", text: "B", id: "b", location: "right", left: 35, top: 43, bold: true, input_value: 8 },
+    { type: "button", text: "A", id: "a", location: "right", left: 78, top: 30, bold: true, input_value: 8 },
+    { type: "button", text: "B", id: "b", location: "right", left: 10, top: 43, bold: true, input_value: 0 },
 
-    { type: "button", text: "Select", id: "select", location: "center", left: -22, top: 68, fontSize: 11, input_value: 2 },
-    { type: "button", text: "Start",  id: "start",  location: "center", left: 12,  top: 68, fontSize: 11, input_value: 3 }
+    { type: "button", text: "Select", id: "select", location: "center", left: 10, top: 35, fontSize: 11, input_value: 2 }, // left -22
+    { type: "button", text: "Start",  id: "start",  location: "center", left: 70,  top: 35, fontSize: 11, input_value: 3 } //left 50
   ];
 
   document.getElementById('cargando').remove();
