@@ -87,7 +87,8 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    z-index: 1;
+    /* sin z-index: al no tener valor explícito, queda debajo de
+       los botones (que también son "auto") por estar antes en el HTML */
     pointer-events: none;
   }
 </style>
