@@ -30,16 +30,6 @@
     width: 100vw;
     height: 100vh;       /* fallback */
     height: 100dvh;      /* alto real visible en móviles */
-
-    /* -----------------------------------------------------------
-       OPCIÓN: imagen de fondo en vez de color sólido.
-       1) Sube tu PNG a la carpeta del repo (ej. fondo.png).
-       2) Descomenta la línea de abajo y ajusta el nombre del archivo.
-       3) Cambia window.EJS_backgroundColor a 'transparent' (ver más abajo).
-       ----------------------------------------------------------- */
-    /* background-image: url('fondo.png'); */
-    /* background-size: cover; */
-    /* background-position: center; */
   }
   #cargando {
     color: #fff;
@@ -76,6 +66,9 @@
   .ejs_dpad_horizontal {
     filter: brightness(0.75) saturate(0.3) !important;
   }
+  .ejs_parent {
+    background: #8f8f83 !important;
+  }
 </style>
 </head>
 <body>
@@ -107,9 +100,7 @@
   window.EJS_gameUrl = juego.rom;
   window.EJS_core = juego.core;
   window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
-  window.EJS_backgroundColor = '#8f8f83';
-  // Si activaste la imagen de fondo arriba (#game background-image),
-  // cambia la línea de arriba por: window.EJS_backgroundColor = 'transparent';
+  window.EJS_backgroundColor = '#000000';
   window.EJS_startButtonName = 'Toca para jugar';
   window.EJS_alignStartButton = 'center';
   window.EJS_color = '#6e6a63';
