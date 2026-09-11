@@ -107,13 +107,13 @@
 
   // Nuestro propio layout de botones (input_value: 0=A, 8=B, 2=Select, 3=Start, 4-7=dpad)
   window.EJS_VirtualGamepadSettings = [
-    { type: "dpad", location: "left", left: "18%", top: "50%", joystickInput: false, inputValues: [4, 5, 6, 7] },
+    { type: "dpad", location: "left", left: "25%", top: "50%", joystickInput: false, inputValues: [4, 5, 6, 7] },
 
     { type: "button", text: "A", id: "a", location: "right", left: 78, top: 30, bold: true, input_value: 0 },
     { type: "button", text: "B", id: "b", location: "right", left: 10, top: 43, bold: true, input_value: 8 },
 
-    { type: "button", text: "Select", id: "select", location: "center", left: -22, top: 40, fontSize: 11, input_value: 2 },
-    { type: "button", text: "Start",  id: "start",  location: "center", left: 12,  top: 40, fontSize: 11, input_value: 3 }
+    { type: "button", text: "Select", id: "select", location: "center", left: -22, top: 35, fontSize: 11, input_value: 2 },
+    { type: "button", text: "Start",  id: "start",  location: "center", left: 30,  top: 35, fontSize: 11, input_value: 3 }
   ];
 
   document.getElementById('cargando').remove();
